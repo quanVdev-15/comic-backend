@@ -1,0 +1,66 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Manga {
+  @@map("manga")
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String?
+  author       String?
+  // Add this new field for the manga's cover image URL
+  coverImageUrl String? @map("cover_image_url") // This will store the main cover image URL
+  categoryid   Int?
+  createddate  DateTime? @default(now()) @db.Timestamptz(6)
+  createdby    String?
+  updateddate_ DateTime? @default(now()) @map("updated_date") @db.Timestamptz(6) // Cleaned up map name
+  updatedby_   String?   @map("updated_by") // Cleaned up map name
+  Chapter      Chapter[]
+  Category     Category? @relation(fields: [categoryid], references: [id], map: "fk_manga_category")
+}
+
+model Chapter {
+  @@map("chapter")
+  id          Int      @id @default(autoincrement())
+  mangaid     Int?
+  url         String?
+  title       String?   
+  pages       Int?      
+  createddate DateTime? @default(now()) @db.Timestamptz(6)
+  createdby   String?
+  updateddate DateTime? @default(now()) @db.Timestamptz(6)
+  updatedby   String?
+  Manga       Manga?    @relation(fields: [mangaid], references: [id], map: "mangaid")
+  Image       Image[]
+}
+
+model Image {
+  @@map("image")
+  id          Int      @id @default(autoincrement())
+  url         String?
+  chapterid   Int?
+  createddate DateTime? @default(now()) @db.Timestamptz(6)
+  createdby   String?
+  updateddate DateTime? @default(now()) @db.Timestamptz(6)
+  updatedby   String?
+  Chapter     Chapter?  @relation(fields: [chapterid], references: [id], map: "chapterid")
+}
+
+model Category {
+  @@map("category")
+  id           Int      @id @default(autoincrement())
+  title        String
+  createddate  DateTime? @default(now()) @db.Timestamptz(6)
+  createdby    String?
+  updateddate_ DateTime? @default(now()) @map("updated_date") @db.Timestamptz(6) // Cleaned up map name
+  updatedby    String?
+  Manga        Manga[]
+}
