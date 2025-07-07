@@ -7,9 +7,9 @@ const {getImagesByChapterId,getChaptersByMangaId,getChaptersWithImagesByMangaId}
 
 router.get('/:id/images',getImagesByChapterId);
 
-router.get('/manga/:mangaid', getChaptersByMangaId);
 
 router.get('/manga/:mangaid/full', getChaptersWithImagesByMangaId);
 
+router.get('/manga/:mangaid', getChaptersByMangaId);
 
 module.exports= router;
