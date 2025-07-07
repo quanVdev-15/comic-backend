@@ -16,8 +16,6 @@ app.use(express.static(path.join(__dirname, "public")));
 const mangaRoutes = require("./routes/manga");
 const crawlRoutes = require("./routes/crawler");
 const chapterRoutes = require("./routes/chapter");
-const readerRoutes = require("./routes/reader");
-app.use("/api/reader", readerRoutes);
 app.use("/api/manga", mangaRoutes);
 app.use("/api/crawl", crawlRoutes);
 app.use("/api/chapter", chapterRoutes);
