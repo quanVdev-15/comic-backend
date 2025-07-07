@@ -41,7 +41,31 @@ const getChaptersByMangaId = async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch chapters' });
   }
 };
+
+const getChaptersWithImagesByMangaId = async (req, res) => {
+  const mangaid = parseInt(req.params.mangaid);
+
+  try {
+    const chapters = await prisma.chapter.findMany({
+      where: { mangaid },
+      orderBy: { id: 'asc' },
+      include: {
+        images: {
+          select: { id: true, url: true },
+          orderBy: { id: 'asc' },
+        },
+      },
+    });
+
+    res.json(chapters);
+  } catch (error) {
+    console.error("❌ Failed to fetch chapters with images:", error);
+    res.status(500).json({ error: 'Failed to fetch chapters with images' });
+  }
+};
+
 module.exports = {
   getImagesByChapterId,
   getChaptersByMangaId, 
+  getChaptersWithImagesByMangaId
 };
