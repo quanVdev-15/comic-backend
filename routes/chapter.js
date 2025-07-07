@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
 
-const {getImagesByChapterId,getChaptersByMangaId,getChaptersWithImagesByMangaId} = require('../controllers/chapterController');
+const {getImagesByChapterId,getChaptersByMangaId,getFullChaptersWithImages} = require('../controllers/chapterController');
 
 
 
@@ -9,5 +9,5 @@ router.get('/:id/images',getImagesByChapterId);
 
 router.get('/manga/:mangaid', getChaptersByMangaId);
 
-router.get('/manga/:mangaid/full', getChaptersWithImagesByMangaId);
+router.get('/manga/:mangaid/full', getFullChaptersWithImages);
 module.exports= router;
