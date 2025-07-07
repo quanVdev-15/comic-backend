@@ -9,5 +9,4 @@ router.get('/:id/images',getImagesByChapterId);
 
 router.get('/manga/:mangaid', getChaptersByMangaId);
 
-router.get('/manga/:mangaid/full', getFullChaptersWithImages);
 module.exports= router;
