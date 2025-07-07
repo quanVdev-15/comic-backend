@@ -42,37 +42,34 @@ const getChaptersByMangaId = async (req, res) => {
 };
 
 const getChaptersWithImagesByMangaId = async (req, res) => {
-  console.log("🔥 HIT /api/chapter/manga/:mangaid/full");
-
   const mangaId = parseInt(req.params.mangaid);
 
   if (isNaN(mangaId)) {
-    return res.status(400).json({ error: "Invalid manga ID" });
+    return res.status(400).json({ message: "Invalid manga ID" });
   }
 
   try {
     const chapters = await prisma.chapter.findMany({
       where: { mangaid: mangaId },
       orderBy: { id: "asc" },
-      select: {
-        id: true,
-        title: true,
-        images: {
+      include: {
+        Image: {
+          orderBy: { id: "asc" },
           select: {
             id: true,
             url: true,
           },
-          orderBy: { id: "asc" },
         },
       },
     });
 
     res.json(chapters);
-  } catch (err) {
-    console.error("❌ Failed to load full chapters:", err);
-    res.status(500).json({ error: "Failed to load full chapters" });
+  } catch (error) {
+    console.error("❌ Failed to fetch full chapters:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 module.exports = {
   getImagesByChapterId,
